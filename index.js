@@ -28,7 +28,7 @@ exports.indexOf = function indexOf (field, value, position = 0, index = null) {
   )
 }
 
-exports.lastIndexOf = function lastIndexOf (field, value, position = 0, index = null) {
+exports.lastIndexOf = function lastIndexOf (field, value, position = field.byteLength * 8 - 1, index = null) {
   if (typeof position === 'object') {
     index = position
     position = 0
