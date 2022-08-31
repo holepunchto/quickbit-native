@@ -21,7 +21,7 @@ exports.indexOf = function indexOf (field, value, position = 0, index = null) {
 
   return binding.field_napi_index_of(
     field,
-    value,
+    value ? 1 : 0,
     position,
     index ? 1 : 0,
     index ? index.handle : null
@@ -36,7 +36,7 @@ exports.lastIndexOf = function lastIndexOf (field, value, position = field.byteL
 
   return binding.field_napi_last_index_of(
     field,
-    value,
+    value ? 1 : 0,
     position,
     index ? 1 : 0,
     index ? index.handle : null

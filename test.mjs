@@ -21,7 +21,7 @@ test('indexOf', (t) => {
   const field = b4a.alloc(1 << 18)
   field[100000] = 1
 
-  t.is(indexOf(field, 1), 800000)
+  t.is(indexOf(field, true), 800000)
 })
 
 test('indexOf + index', (t) => {
@@ -30,5 +30,5 @@ test('indexOf + index', (t) => {
 
   const index = new Index(field)
 
-  t.is(indexOf(field, 1, index), 800000)
+  t.is(indexOf(field, true, index), 800000)
 })
