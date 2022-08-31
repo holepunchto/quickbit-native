@@ -1,0 +1,4 @@
+[submodule "vendor/libfield"]
+	path = vendor/libfield
+	url = git@github.com:holepunchto/libfield.git
+	shallow = true
