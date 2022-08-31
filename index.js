@@ -31,7 +31,7 @@ exports.indexOf = function indexOf (field, value, position = 0, index = null) {
 exports.lastIndexOf = function lastIndexOf (field, value, position = field.byteLength * 8 - 1, index = null) {
   if (typeof position === 'object') {
     index = position
-    position = 0
+    position = field.byteLength * 8 - 1
   }
 
   return binding.field_napi_last_index_of(
