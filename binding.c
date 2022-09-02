@@ -60,14 +60,22 @@ NAPI_METHOD(field_napi_last_index_of) {
 }
 
 NAPI_METHOD(field_napi_index_init) {
+  NAPI_ARGV(2);
+  NAPI_ARGV_BUFFER_CAST(uint8_t *, index, 0);
+  NAPI_ARGV_BUFFER_CAST(uint8_t *, field, 1);
+
+  field_index_init(index, field, field_len);
+
+  return NULL;
+}
+
+NAPI_METHOD(field_napi_index_update) {
   NAPI_ARGV(3);
   NAPI_ARGV_BUFFER_CAST(uint8_t *, index, 0);
   NAPI_ARGV_BUFFER_CAST(uint8_t *, field, 1);
-  NAPI_ARGV_UINT32(value, 2);
+  NAPI_ARGV_UINT32(bit, 2);
 
-  field_index_init(index, field, field_len, value);
-
-  return NULL;
+  NAPI_RETURN_UINT32(field_index_update(index, field, bit))
 }
 
 NAPI_INIT() {
@@ -78,4 +86,5 @@ NAPI_INIT() {
   NAPI_EXPORT_FUNCTION(field_napi_index_of)
   NAPI_EXPORT_FUNCTION(field_napi_last_index_of)
   NAPI_EXPORT_FUNCTION(field_napi_index_init)
+  NAPI_EXPORT_FUNCTION(field_napi_index_update)
 }

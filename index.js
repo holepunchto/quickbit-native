@@ -44,10 +44,14 @@ exports.lastIndexOf = function lastIndexOf (field, value, position = field.byteL
 }
 
 exports.Index = class Index {
-  constructor (field, value = 0) {
-    this.value = value ? 1 : 0
+  constructor (field) {
+    this.field = field
     this.handle = b4a.alloc(binding.sizeof_field_index_t)
 
-    binding.field_napi_index_init(this.handle, field, value)
+    binding.field_napi_index_init(this.handle, this.field)
+  }
+
+  update (bit) {
+    return binding.field_napi_index_update(this.handle, this.field, bit) !== 0
   }
 }
