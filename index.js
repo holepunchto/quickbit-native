@@ -2,13 +2,13 @@ const binding = require('node-gyp-build')(__dirname)
 const b4a = require('b4a')
 
 exports.get = function get (field, bit) {
-  if (bit >= field.byteLength * 8) throw new RangeError('Out of bounds')
+  if (bit < 0 || bit >= field.byteLength * 8) throw new RangeError('Out of bounds')
 
   return binding.field_napi_get(field, bit) !== 0
 }
 
 exports.set = function set (field, bit, value = true) {
-  if (bit >= field.byteLength * 8) throw new RangeError('Out of bounds')
+  if (bit < 0 || bit >= field.byteLength * 8) throw new RangeError('Out of bounds')
 
   return binding.field_napi_set(field, bit, value ? 1 : 0) !== 0
 }
@@ -18,6 +18,8 @@ exports.indexOf = function indexOf (field, value, position = 0, index = null) {
     index = position
     position = 0
   }
+
+  if (position < 0 || position >= field.byteLength * 8) throw new RangeError('Out of bounds')
 
   return binding.field_napi_index_of(
     field,
@@ -33,6 +35,8 @@ exports.lastIndexOf = function lastIndexOf (field, value, position = field.byteL
     index = position
     position = field.byteLength * 8 - 1
   }
+
+  if (position < 0 || position >= field.byteLength * 8) throw new RangeError('Out of bounds')
 
   return binding.field_napi_last_index_of(
     field,
@@ -52,6 +56,8 @@ exports.Index = class Index {
   }
 
   update (bit) {
+    if (bit < 0 || bit >= this.field.byteLength * 8) throw new RangeError('Out of bounds')
+
     return binding.field_napi_index_update(this.handle, this.field, bit) !== 0
   }
 }
