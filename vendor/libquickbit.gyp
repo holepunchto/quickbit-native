@@ -1,6 +1,6 @@
 {
   'targets': [{
-    'target_name': 'quickbit',
+    'target_name': 'libquickbit',
     'type': 'static_library',
     'include_dirs': [
       './libquickbit/vendor/libsimdle/include',

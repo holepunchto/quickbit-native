@@ -6,7 +6,7 @@
       './vendor/libquickbit/include',
     ],
     'dependencies': [
-      './vendor/libquickbit.gyp:quickbit',
+      './vendor/libquickbit.gyp:libquickbit',
     ],
     'sources': [
       './binding.c',
