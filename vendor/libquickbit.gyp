@@ -1,12 +1,12 @@
 {
   'targets': [{
-    'target_name': 'field',
+    'target_name': 'quickbit',
     'type': 'static_library',
     'include_dirs': [
-      './libfield/vendor/libsimd/include',
+      './libquickbit/vendor/libsimdle/include',
     ],
     'sources': [
-      './libfield/src/field.c',
+      './libquickbit/src/quickbit.c',
     ],
     'configurations': {
       'Debug': {

@@ -1,12 +1,12 @@
 {
   'targets': [{
-    'target_name': 'field',
+    'target_name': 'quickbit',
     'include_dirs': [
       '<!(node -e "require(\'napi-macros\')")',
-      './vendor/libfield/include',
+      './vendor/libquickbit/include',
     ],
     'dependencies': [
-      './vendor/libfield.gyp:field',
+      './vendor/libquickbit.gyp:quickbit',
     ],
     'sources': [
       './binding.c',

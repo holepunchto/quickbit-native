@@ -1,19 +1,19 @@
 {
-  "name": "field-native",
+  "name": "quickbit-native",
   "version": "1.0.0",
-  "description": "libfield JavaScript bindings for Node.js",
+  "description": "libquickbit JavaScript bindings for Node.js",
   "main": "index.js",
   "files": [
     "index.js",
     "prebuilds",
     "binding.c",
     "binding.gyp",
-    "vendor/libfield/LICENSE",
-    "vendor/libfield/include",
-    "vendor/libfield/src",
-    "vendor/libfield.gyp",
-    "vendor/libfield/vendor/libsimd/LICENSE",
-    "vendor/libfield/vendor/libsimd/include"
+    "vendor/libquickbit/LICENSE",
+    "vendor/libquickbit/include",
+    "vendor/libquickbit/src",
+    "vendor/libquickbit.gyp",
+    "vendor/libquickbit/vendor/libsimdle/LICENSE",
+    "vendor/libquickbit/vendor/libsimdle/include"
   ],
   "scripts": {
     "test": "standard && brittle test.mjs",
@@ -22,14 +22,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/holepunchto/field-native.git"
+    "url": "git+https://github.com/holepunchto/quickbit-native.git"
   },
   "author": "Kasper Isager Dalsgarð <kasper@funktionel.co>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/holepunchto/field-native/issues"
+    "url": "https://github.com/holepunchto/quickbit-native/issues"
   },
-  "homepage": "https://github.com/holepunchto/field-native#readme",
+  "homepage": "https://github.com/holepunchto/quickbit-native#readme",
   "dependencies": {
     "b4a": "^1.6.0",
     "napi-macros": "^2.0.0",
