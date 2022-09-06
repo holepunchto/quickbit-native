@@ -13,6 +13,14 @@ exports.set = function set (field, bit, value = true) {
   return binding.quickbit_napi_set(field, bit, value ? 1 : 0) !== 0
 }
 
+exports.fill = function fill (field, value, start = 0, end = field.byteLength * 8) {
+  if (start < 0 || start >= field.byteLength * 8 || start > end) throw new RangeError('Out of bounds')
+
+  binding.quickbit_napi_fill(field, value ? 1 : 0, start, end)
+
+  return field
+}
+
 exports.indexOf = function indexOf (field, value, position = 0, index = null) {
   if (typeof position === 'object') {
     index = position

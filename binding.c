@@ -19,6 +19,18 @@ NAPI_METHOD(quickbit_napi_set) {
   NAPI_RETURN_UINT32(quickbit_set(field, bit, value))
 }
 
+NAPI_METHOD(quickbit_napi_fill) {
+  NAPI_ARGV(4);
+  NAPI_ARGV_BUFFER_CAST(uint8_t *, field, 0);
+  NAPI_ARGV_UINT32(value, 1);
+  NAPI_ARGV_UINT32(start, 2);
+  NAPI_ARGV_UINT32(end, 3);
+
+  quickbit_fill(field, value, start, end);
+
+  return NULL;
+}
+
 NAPI_METHOD(quickbit_napi_index_of) {
   NAPI_ARGV(5);
   NAPI_ARGV_BUFFER_CAST(uint8_t *, field, 0);
@@ -83,6 +95,7 @@ NAPI_INIT() {
 
   NAPI_EXPORT_FUNCTION(quickbit_napi_get)
   NAPI_EXPORT_FUNCTION(quickbit_napi_set)
+  NAPI_EXPORT_FUNCTION(quickbit_napi_fill)
   NAPI_EXPORT_FUNCTION(quickbit_napi_index_of)
   NAPI_EXPORT_FUNCTION(quickbit_napi_last_index_of)
   NAPI_EXPORT_FUNCTION(quickbit_napi_index_init)
