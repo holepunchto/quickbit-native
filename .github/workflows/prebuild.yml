@@ -13,6 +13,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     container: ${{ matrix.container }}
     steps:
+    - if: matrix.os == 'ubuntu-latest'
+      run: |
+        apt-add-repository ppa:git-core/ppa
+        apt-get update
+        apt-get install -y git
     - uses: actions/checkout@v3
       with:
         submodules: recursive
