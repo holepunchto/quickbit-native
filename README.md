@@ -61,7 +61,7 @@ Skip the first parts of the index that contain nothing but `value`. If the index
 
 #### `const position = index.skipLast(value[, position])`
 
-Skip the last parts of the index that contain nothing but `value`. If the index contains *only* `value`, the last index of the field is returned.
+Skip the last parts of the index that contain nothing but `value`. If the index contains *only* `value`, the first index of the field is returned.
 
 ## License
 
