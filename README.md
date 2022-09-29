@@ -9,7 +9,7 @@ npm install quickbit-native
 ## Usage
 
 ```js
-const { get, set, indexOf } = require('quickbit-native')
+const { get, set, findFirst } = require('quickbit-native')
 
 const field = Buffer.alloc(256) // 2048 bits
 

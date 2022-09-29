@@ -18,7 +18,7 @@ exports.findFirst = function findFirst (field, value, position = 0) {
   return binding.quickbit_napi_find_first(field, value ? 1 : 0, position)
 }
 
-exports.findLast = function lastIndexOf (field, value, position = field.byteLength * 8 - 1) {
+exports.findLast = function findLast (field, value, position = field.byteLength * 8 - 1) {
   return binding.quickbit_napi_find_last(field, value ? 1 : 0, position)
 }
 
