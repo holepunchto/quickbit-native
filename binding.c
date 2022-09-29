@@ -5,7 +5,7 @@
 NAPI_METHOD(quickbit_napi_get) {
   NAPI_ARGV(2);
   NAPI_ARGV_BUFFER_CAST(uint8_t *, field, 0);
-  NAPI_ARGV_UINT32(bit, 1);
+  NAPI_ARGV_INT32(bit, 1);
 
   NAPI_RETURN_UINT32(quickbit_get(field, field_len, bit))
 }
@@ -13,7 +13,7 @@ NAPI_METHOD(quickbit_napi_get) {
 NAPI_METHOD(quickbit_napi_set) {
   NAPI_ARGV(3);
   NAPI_ARGV_BUFFER_CAST(uint8_t *, field, 0);
-  NAPI_ARGV_UINT32(bit, 1);
+  NAPI_ARGV_INT32(bit, 1);
   NAPI_ARGV_UINT32(value, 2);
 
   NAPI_RETURN_UINT32(quickbit_set(field, field_len, bit, value))
@@ -23,52 +23,30 @@ NAPI_METHOD(quickbit_napi_fill) {
   NAPI_ARGV(4);
   NAPI_ARGV_BUFFER_CAST(uint8_t *, field, 0);
   NAPI_ARGV_UINT32(value, 1);
-  NAPI_ARGV_UINT32(start, 2);
-  NAPI_ARGV_UINT32(end, 3);
+  NAPI_ARGV_INT32(start, 2);
+  NAPI_ARGV_INT32(end, 3);
 
   quickbit_fill(field, field_len, value, start, end);
 
   return NULL;
 }
 
-NAPI_METHOD(quickbit_napi_index_of) {
-  NAPI_ARGV(5);
+NAPI_METHOD(quickbit_napi_find_first) {
+  NAPI_ARGV(3);
   NAPI_ARGV_BUFFER_CAST(uint8_t *, field, 0);
   NAPI_ARGV_UINT32(value, 1);
-  NAPI_ARGV_UINT32(position, 2);
-  NAPI_ARGV_UINT32(indexed, 3);
+  NAPI_ARGV_INT32(position, 2);
 
-  int32_t i;
-
-  if (indexed) {
-    NAPI_ARGV_BUFFER_CAST(uint8_t *, index, 4);
-
-    i = quickbit_index_of(field, field_len, value, position, index);
-  } else {
-    i = quickbit_index_of(field, field_len, value, position, NULL);
-  }
-
-  NAPI_RETURN_INT32(i)
+  NAPI_RETURN_INT32(quickbit_find_first(field, field_len, value, position))
 }
 
-NAPI_METHOD(quickbit_napi_last_index_of) {
-  NAPI_ARGV(5);
+NAPI_METHOD(quickbit_napi_find_last) {
+  NAPI_ARGV(3);
   NAPI_ARGV_BUFFER_CAST(uint8_t *, field, 0);
   NAPI_ARGV_UINT32(value, 1);
-  NAPI_ARGV_UINT32(position, 2);
-  NAPI_ARGV_UINT32(indexed, 3);
+  NAPI_ARGV_INT32(position, 2);
 
-  int32_t i;
-
-  if (indexed) {
-    NAPI_ARGV_BUFFER_CAST(uint8_t *, index, 4);
-
-    i = quickbit_last_index_of(field, field_len, value, position, index);
-  } else {
-    i = quickbit_last_index_of(field, field_len, value, position, NULL);
-  }
-
-  NAPI_RETURN_INT32(i)
+  NAPI_RETURN_INT32(quickbit_find_last(field, field_len, value, position))
 }
 
 NAPI_METHOD(quickbit_napi_index_init) {
@@ -85,9 +63,29 @@ NAPI_METHOD(quickbit_napi_index_update) {
   NAPI_ARGV(3);
   NAPI_ARGV_BUFFER_CAST(uint8_t *, index, 0);
   NAPI_ARGV_BUFFER_CAST(uint8_t *, field, 1);
-  NAPI_ARGV_UINT32(bit, 2);
+  NAPI_ARGV_INT32(bit, 2);
 
   NAPI_RETURN_UINT32(quickbit_index_update(index, field, field_len, bit))
+}
+
+NAPI_METHOD(quickbit_napi_skip_first) {
+  NAPI_ARGV(4);
+  NAPI_ARGV_BUFFER_CAST(uint8_t *, index, 0);
+  NAPI_ARGV_UINT32(len, 1);
+  NAPI_ARGV_UINT32(value, 2);
+  NAPI_ARGV_INT32(position, 3);
+
+  NAPI_RETURN_UINT32(quickbit_skip_first(index, len, value, position))
+}
+
+NAPI_METHOD(quickbit_napi_skip_last) {
+  NAPI_ARGV(4);
+  NAPI_ARGV_BUFFER_CAST(uint8_t *, index, 0);
+  NAPI_ARGV_UINT32(len, 1);
+  NAPI_ARGV_UINT32(value, 2);
+  NAPI_ARGV_INT32(position, 3);
+
+  NAPI_RETURN_UINT32(quickbit_skip_last(index, len, value, position))
 }
 
 NAPI_INIT() {
@@ -96,8 +94,10 @@ NAPI_INIT() {
   NAPI_EXPORT_FUNCTION(quickbit_napi_get)
   NAPI_EXPORT_FUNCTION(quickbit_napi_set)
   NAPI_EXPORT_FUNCTION(quickbit_napi_fill)
-  NAPI_EXPORT_FUNCTION(quickbit_napi_index_of)
-  NAPI_EXPORT_FUNCTION(quickbit_napi_last_index_of)
+  NAPI_EXPORT_FUNCTION(quickbit_napi_find_first)
+  NAPI_EXPORT_FUNCTION(quickbit_napi_find_last)
   NAPI_EXPORT_FUNCTION(quickbit_napi_index_init)
   NAPI_EXPORT_FUNCTION(quickbit_napi_index_update)
+  NAPI_EXPORT_FUNCTION(quickbit_napi_skip_first)
+  NAPI_EXPORT_FUNCTION(quickbit_napi_skip_last)
 }

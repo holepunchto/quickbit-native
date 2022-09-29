@@ -2,63 +2,24 @@ const binding = require('node-gyp-build')(__dirname)
 const b4a = require('b4a')
 
 exports.get = function get (field, bit) {
-  if (bit < 0) bit += field.byteLength * 8
-  if (bit < 0 || bit >= field.byteLength * 8) throw new RangeError('Out of bounds')
-
   return binding.quickbit_napi_get(field, bit) !== 0
 }
 
 exports.set = function set (field, bit, value = true) {
-  if (bit < 0) bit += field.byteLength * 8
-  if (bit < 0 || bit >= field.byteLength * 8) throw new RangeError('Out of bounds')
-
   return binding.quickbit_napi_set(field, bit, value ? 1 : 0) !== 0
 }
 
 exports.fill = function fill (field, value, start = 0, end = field.byteLength * 8) {
-  if (start < 0) start += field.byteLength * 8
-  if (end < 0) end += field.byteLength * 8
-  if (start < 0 || start >= field.byteLength * 8 || start > end) throw new RangeError('Out of bounds')
-
   binding.quickbit_napi_fill(field, value ? 1 : 0, start, end)
-
   return field
 }
 
-exports.indexOf = function indexOf (field, value, position = 0, index = null) {
-  if (typeof position === 'object') {
-    index = position
-    position = 0
-  }
-
-  if (position < 0) position += field.byteLength * 8
-  if (position < 0 && position >= field.byteLength * 8) throw new RangeError('Out of bounds')
-
-  return binding.quickbit_napi_index_of(
-    field,
-    value ? 1 : 0,
-    position,
-    index ? 1 : 0,
-    index ? index.handle : null
-  )
+exports.findFirst = function findFirst (field, value, position = 0) {
+  return binding.quickbit_napi_find_first(field, value ? 1 : 0, position)
 }
 
-exports.lastIndexOf = function lastIndexOf (field, value, position = field.byteLength * 8 - 1, index = null) {
-  if (typeof position === 'object') {
-    index = position
-    position = field.byteLength * 8 - 1
-  }
-
-  if (position < 0) position += field.byteLength * 8
-  if (position < 0 || position >= field.byteLength * 8) throw new RangeError('Out of bounds')
-
-  return binding.quickbit_napi_last_index_of(
-    field,
-    value ? 1 : 0,
-    position,
-    index ? 1 : 0,
-    index ? index.handle : null
-  )
+exports.findLast = function lastIndexOf (field, value, position = field.byteLength * 8 - 1) {
+  return binding.quickbit_napi_find_last(field, value ? 1 : 0, position)
 }
 
 exports.Index = class Index {
@@ -72,9 +33,14 @@ exports.Index = class Index {
   }
 
   update (bit) {
-    if (bit < 0) bit += this.field.byteLength * 8
-    if (bit < 0 || bit >= this.field.byteLength * 8) throw new RangeError('Out of bounds')
-
     return binding.quickbit_napi_index_update(this.handle, this.field, bit) !== 0
+  }
+
+  skipFirst (value, position = 0) {
+    return binding.quickbit_napi_skip_first(this.handle, this.field.byteLength, value ? 1 : 0, position)
+  }
+
+  skipLast (value, position = this.field.byteLength * 8 - 1) {
+    return binding.quickbit_napi_skip_last(this.handle, this.field.byteLength, value ? 1 : 0, position)
   }
 }

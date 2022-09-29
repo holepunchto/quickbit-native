@@ -1,9 +1,9 @@
 import test from 'brittle'
 import b4a from 'b4a'
 
-import { indexOf, Index } from './index.js'
+import { findFirst, Index } from './index.js'
 
-test('indexOf', async (t) => {
+test('findFirst', async (t) => {
   const field = b4a.alloc(1 << 18)
   field[100000] = 1
 
@@ -15,7 +15,7 @@ test('indexOf', async (t) => {
 
     const elapsed = await t.execution(() => {
       for (let i = 0; i < ops; i++) {
-        r = indexOf(field, 1, index)
+        r = findFirst(field, true, index.skipFirst(false))
       }
     })
 
@@ -31,7 +31,7 @@ test('indexOf', async (t) => {
 
     const elapsed = await t.execution(() => {
       for (let i = 0; i < ops; i++) {
-        r = indexOf(field, 1)
+        r = findFirst(field, true)
       }
     })
 
