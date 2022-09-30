@@ -22,25 +22,59 @@ exports.findLast = function findLast (field, value, position = field.byteLength 
   return binding.quickbit_napi_find_last(field, value ? 1 : 0, position)
 }
 
-exports.Index = class Index {
+const Index = exports.Index = class Index {
+  static from (fieldOrChunks) {
+    if (Array.isArray(fieldOrChunks)) {
+      return new SparseIndex(fieldOrChunks)
+    } else {
+      return new DenseIndex(fieldOrChunks)
+    }
+  }
+
+  get byteLength () {
+    return 0
+  }
+
+  constructor () {
+    this.handle = b4a.allocUnsafe(binding.sizeof_quickbit_index_t)
+  }
+
+  skipFirst (value, position = 0) {
+    return binding.quickbit_napi_skip_first(this.handle, this.byteLength, value ? 1 : 0, position)
+  }
+
+  skipLast (value, position = this.byteLength * 8 - 1) {
+    return binding.quickbit_napi_skip_last(this.handle, this.byteLength, value ? 1 : 0, position)
+  }
+}
+
+class DenseIndex extends Index {
   constructor (field) {
-    if (field.byteLength > 1 << 18) throw new RangeError('Field is too large to index')
+    super()
+    this.reindex(field)
+  }
 
-    this.field = field
-    this.handle = b4a.alloc(binding.sizeof_quickbit_index_t)
-
-    binding.quickbit_napi_index_init(this.handle, this.field)
+  get byteLength () {
+    return this.field.byteLength
   }
 
   update (bit) {
     return binding.quickbit_napi_index_update(this.handle, this.field, bit) !== 0
   }
+}
 
-  skipFirst (value, position = 0) {
-    return binding.quickbit_napi_skip_first(this.handle, this.field.byteLength, value ? 1 : 0, position)
+class SparseIndex extends Index {
+  constructor (chunks) {
+    super()
+    this.reindex(chunks)
   }
 
-  skipLast (value, position = this.field.byteLength * 8 - 1) {
-    return binding.quickbit_napi_skip_last(this.handle, this.field.byteLength, value ? 1 : 0, position)
+  get byteLength () {
+    const last = this.chunks[this.chunks.length - 1]
+    return last ? last.offset + last.field.byteLength : 0
+  }
+
+  update (bit) {
+    return binding.quickbit_napi_index_update_sparse(this.handle, this.chunks, bit) !== 0
   }
 }
