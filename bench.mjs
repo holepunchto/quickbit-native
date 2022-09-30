@@ -9,7 +9,7 @@ test('findFirst', async (t) => {
 
   await t.test('with index', async (t) => {
     const ops = 10000000
-    const index = new Index(field)
+    const index = Index.from(field)
 
     let r
 
