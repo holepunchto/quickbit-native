@@ -51,7 +51,9 @@ const Index = exports.Index = class Index {
 class DenseIndex extends Index {
   constructor (field) {
     super()
-    this.reindex(field)
+    this.field = field
+
+    binding.quickbit_napi_index_init(this.handle, this.field)
   }
 
   get byteLength () {
@@ -66,7 +68,9 @@ class DenseIndex extends Index {
 class SparseIndex extends Index {
   constructor (chunks) {
     super()
-    this.reindex(chunks)
+    this.chunks = chunks
+
+    binding.quickbit_napi_index_init_sparse(this.handle, this.chunks)
   }
 
   get byteLength () {
