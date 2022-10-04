@@ -9,7 +9,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         include:
         - os: ubuntu-latest
-          container: gcc:7.4.0
+          container: ghcr.io/holepunchto/prebuild-linux
     runs-on: ${{ matrix.os }}
     container: ${{ matrix.container }}
     steps:
