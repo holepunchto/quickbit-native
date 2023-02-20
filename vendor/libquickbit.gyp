@@ -7,6 +7,7 @@
     ],
     'sources': [
       './libquickbit/src/quickbit.c',
+      './libquickbit/vendor/libsimdle/src/extern.c',
     ],
     'configurations': {
       'Debug': {
