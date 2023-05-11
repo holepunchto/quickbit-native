@@ -14,6 +14,7 @@
     "vendor/libquickbit.gyp",
     "vendor/libquickbit/vendor/libsimdle/LICENSE",
     "vendor/libquickbit/vendor/libsimdle/include",
+    "vendor/libquickbit/vendor/libsimdle/src",
     "CMakeLists.txt"
   ],
   "scripts": {
