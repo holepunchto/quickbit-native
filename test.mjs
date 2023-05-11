@@ -108,3 +108,13 @@ test('index sparse', (t) => {
 
   t.alike(index.handle.subarray(0, expected.byteLength), expected)
 })
+
+test('skipLast at index boundary', (t) => {
+  const field = b4a.alloc(1 << 18)
+
+  set(field, 12800, true)
+
+  const index = Index.from(field)
+
+  t.is(index.skipLast(false, 12808), 12808)
+})
