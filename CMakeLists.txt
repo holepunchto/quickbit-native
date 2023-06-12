@@ -2,13 +2,13 @@ cmake_minimum_required(VERSION 3.25)
 
 project(quickbit_native C)
 
-include(pear)
+include(bare)
 
 if(NOT TARGET quickbit)
   add_subdirectory(vendor/libquickbit EXCLUDE_FROM_ALL)
 endif()
 
-add_pear_module(quickbit_native)
+add_bare_module(quickbit_native)
 
 target_sources(
   quickbit_native
