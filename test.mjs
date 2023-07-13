@@ -1,7 +1,7 @@
 import test from 'brittle'
 import b4a from 'b4a'
 
-import { get, set, fill, findFirst, Index } from './index.js'
+import { get, set, fill, clear, findFirst, Index } from './index.js'
 
 test('get', (t) => {
   const field = b4a.alloc(1)
@@ -33,6 +33,13 @@ test('fill', (t) => {
 
   fill(field, true, 4, 28)
   t.alike([...field], [0xf0, 0xff, 0xff, 0x0f])
+})
+
+test('clear', (t) => {
+  const field = b4a.alloc(6, 0xff)
+
+  clear(field, { field: b4a.from([0b11110000, 0b00001111]), offset: 2 })
+  t.alike([...field], [0xff, 0xff, 0x0f, 0xf0, 0xff, 0xff])
 })
 
 test('findFirst', (t) => {

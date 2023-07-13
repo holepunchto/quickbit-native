@@ -30,6 +30,10 @@ exports.fill = function fill (field, value, start = 0, end = field.byteLength * 
   return field
 }
 
+exports.clear = function clear (field, ...chunks) {
+  binding.quickbit_napi_clear(field, chunks)
+}
+
 exports.findFirst = function findFirst (field, value, position = 0) {
   const n = field.byteLength * 8
 
