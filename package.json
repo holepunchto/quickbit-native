@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "test": "standard && brittle test.mjs",
-    "prebuild": "prebuildify --napi",
+    "prebuild": "prebuildify",
     "install": "node-gyp-build"
   },
   "repository": {
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "brittle": "^3.1.0",
-    "prebuildify": "^5.0.1",
+    "prebuildify": "^6.0.0",
     "standard": "^17.0.0"
   }
 }
