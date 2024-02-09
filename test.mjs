@@ -132,3 +132,13 @@ test('skipLast at index boundary', (t) => {
 
   t.is(index.skipLast(false, 12808), 12808)
 })
+
+test('large index', (t) => {
+  const field = b4a.alloc(1 << 18)
+
+  set(field, 1000000, true)
+
+  const index = Index.from(field)
+
+  t.is(index.skipFirst(false, 0), 999936)
+})
