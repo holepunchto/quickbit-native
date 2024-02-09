@@ -17,6 +17,7 @@
     "vendor/libquickbit/vendor/libsimdle/src",
     "CMakeLists.txt"
   ],
+  "addon": true,
   "scripts": {
     "test": "standard && brittle test.mjs",
     "prebuild": "prebuildify",
@@ -41,8 +42,5 @@
     "brittle": "^3.1.0",
     "prebuildify": "^6.0.0",
     "standard": "^17.0.0"
-  },
-  "addon": {
-    "target": "quickbit_native"
   }
 }
