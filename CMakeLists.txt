@@ -12,8 +12,6 @@ add_bare_module(quickbit_native)
 
 target_sources(
   ${quickbit_native}
-  PUBLIC
-    $<TARGET_OBJECTS:quickbit>
   PRIVATE
     binding.c
 )
@@ -21,5 +19,5 @@ target_sources(
 target_link_libraries(
   ${quickbit_native}
   PUBLIC
-    quickbit
+    quickbit_static
 )
