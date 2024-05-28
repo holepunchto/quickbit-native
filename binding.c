@@ -133,19 +133,19 @@ NAPI_METHOD(quickbit_napi_index_update) {
 }
 
 NAPI_METHOD(quickbit_napi_index_update_sparse) {
-  NAPI_ARGV(3);
+  NAPI_ARGV(4);
   NAPI_ARGV_BUFFER_CAST(uint8_t *, index, 0);
-  NAPI_ARGV_INT32(bit, 2);
+  NAPI_ARGV_BUFFER_CAST(uint8_t *, field, 1);
+  NAPI_ARGV_UINT32(offset, 2);
+  NAPI_ARGV_INT32(bit, 3);
 
-  quickbit_chunk_t *chunks;
-  uint32_t len;
-  quickbit_napi_argv_chunks(env, argv[1], &chunks, &len);
+  quickbit_chunk_t chunk = {
+    .field = field,
+    .len = field_len,
+    .offset = offset,
+  };
 
-  bool changed = quickbit_index_update_sparse(index, chunks, len, bit);
-
-  free(chunks);
-
-  NAPI_RETURN_UINT32(changed)
+  NAPI_RETURN_UINT32(quickbit_index_update_sparse(index, &chunk, 1, bit))
 }
 
 NAPI_METHOD(quickbit_napi_skip_first) {

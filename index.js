@@ -116,6 +116,21 @@ class DenseIndex extends Index {
   }
 }
 
+function selectChunk (chunks, offset) {
+  for (let i = 0; i < chunks.length; i++) {
+    const next = chunks[i]
+
+    const start = next.offset
+    const end = next.offset + next.field.byteLength
+
+    if (offset >= start && offset + 16 <= end) {
+      return next
+    }
+  }
+
+  return null
+}
+
 class SparseIndex extends Index {
   constructor (chunks, byteLength) {
     super(byteLength)
@@ -136,6 +151,15 @@ class SparseIndex extends Index {
     if (bit < 0) bit += n
     if (bit < 0 || bit >= n) return false
 
-    return binding.quickbit_napi_index_update_sparse(this.handle, this.chunks, bit) !== 0
+    const i = Math.floor(bit / 16384)
+    const j = Math.floor(bit / 128)
+
+    const offset = j * 16
+
+    const chunk = selectChunk(this.chunks, offset)
+
+    if (chunk === null) return false
+
+    return binding.quickbit_napi_index_update_sparse(this.handle, chunk.field, chunk.offset, bit) !== 0
   }
 }
