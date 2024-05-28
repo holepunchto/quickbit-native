@@ -151,7 +151,6 @@ class SparseIndex extends Index {
     if (bit < 0) bit += n
     if (bit < 0 || bit >= n) return false
 
-    const i = Math.floor(bit / 16384)
     const j = Math.floor(bit / 128)
 
     const offset = j * 16
