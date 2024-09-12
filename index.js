@@ -1,5 +1,5 @@
-const binding = require('node-gyp-build')(__dirname)
 const b4a = require('b4a')
+const binding = require('./binding')
 
 exports.get = function get (field, bit) {
   const n = field.byteLength * 8

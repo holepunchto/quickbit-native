@@ -5,29 +5,25 @@
   "main": "index.js",
   "files": [
     "index.js",
-    "prebuilds",
+    "macros.h",
     "binding.c",
-    "binding.gyp",
-    "vendor/libquickbit/LICENSE",
-    "vendor/libquickbit/include",
-    "vendor/libquickbit/src",
-    "vendor/libquickbit.gyp",
-    "vendor/libquickbit/vendor/libsimdle/LICENSE",
-    "vendor/libquickbit/vendor/libsimdle/include",
-    "vendor/libquickbit/vendor/libsimdle/src",
-    "CMakeLists.txt"
+    "binding.js",
+    "CMakeLists.txt",
+    "prebuilds",
+    "vendor/libquickbit"
   ],
   "addon": true,
   "scripts": {
-    "test": "standard && brittle test.mjs",
-    "prebuild": "prebuildify",
-    "install": "node-gyp-build"
+    "test": "npm run lint && npm run test:bare && npm run test:node",
+    "test:bare": "bare test.mjs",
+    "test:node": "node test.mjs",
+    "lint": "standard"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/holepunchto/quickbit-native.git"
   },
-  "author": "Kasper Isager Dalsgarð <kasper@funktionel.co>",
+  "author": "Holepunch",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/holepunchto/quickbit-native/issues"
@@ -35,12 +31,10 @@
   "homepage": "https://github.com/holepunchto/quickbit-native#readme",
   "dependencies": {
     "b4a": "^1.6.0",
-    "napi-macros": "^2.0.0",
-    "node-gyp-build": "^4.2.3"
+    "load-addon": "^1.0.0"
   },
   "devDependencies": {
     "brittle": "^3.1.0",
-    "prebuildify": "^6.0.0",
     "standard": "^17.0.0"
   }
 }

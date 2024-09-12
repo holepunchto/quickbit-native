@@ -1,7 +1,8 @@
-#include <napi-macros.h>
 #include <node_api.h>
 #include <quickbit.h>
 #include <stdlib.h>
+
+#include "macros.h"
 
 static inline void
 quickbit_napi_argv_chunks (napi_env env, napi_value napi_chunks, quickbit_chunk_t **chunks, uint32_t *len) {
