@@ -1,6 +1,6 @@
 {
   "name": "quickbit-native",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "libquickbit JavaScript bindings for Node.js",
   "main": "index.js",
   "files": [
