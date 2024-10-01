@@ -31,7 +31,7 @@
   "homepage": "https://github.com/holepunchto/quickbit-native#readme",
   "dependencies": {
     "b4a": "^1.6.0",
-    "load-addon": "^1.0.0"
+    "node-gyp-build": "^4.8.2"
   },
   "devDependencies": {
     "brittle": "^3.1.0",
