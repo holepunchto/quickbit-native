@@ -1,4 +1,0 @@
-[submodule "vendor/libquickbit"]
-	path = vendor/libquickbit
-	url = ../../holepunchto/libquickbit.git
-	shallow = true

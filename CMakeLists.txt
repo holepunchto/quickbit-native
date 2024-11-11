@@ -1,13 +1,12 @@
 cmake_minimum_required(VERSION 3.25)
 
 find_package(cmake-bare REQUIRED PATHS node_modules/cmake-bare)
+find_package(cmake-fetch REQUIRED PATHS node_modules/cmake-fetch)
 find_package(cmake-napi REQUIRED PATHS node_modules/cmake-napi)
 
 project(quickbit_native C)
 
-if(NOT TARGET quickbit)
-  add_subdirectory(vendor/libquickbit EXCLUDE_FROM_ALL)
-endif()
+fetch_package("github:holepunchto/libquickbit#5ecf908")
 
 add_bare_module(quickbit_native_bare)
 
@@ -15,13 +14,13 @@ target_sources(
   ${quickbit_native_bare}
   PRIVATE
     binding.c
-  PUBLIC
-    $<TARGET_OBJECTS:quickbit>
-    $<TARGET_OBJECTS:simdle>
 )
 
 target_link_libraries(
   ${quickbit_native_bare}
+  PRIVATE
+    $<TARGET_OBJECTS:quickbit>
+    $<TARGET_OBJECTS:simdle>
   PUBLIC
     quickbit
     simdle
@@ -33,13 +32,13 @@ target_sources(
   ${quickbit_native_node}
   PRIVATE
     binding.c
-  PUBLIC
-    $<TARGET_OBJECTS:quickbit>
-    $<TARGET_OBJECTS:simdle>
 )
 
 target_link_libraries(
   ${quickbit_native_node}
+  PRIVATE
+    $<TARGET_OBJECTS:quickbit>
+    $<TARGET_OBJECTS:simdle>
   PUBLIC
     quickbit
     simdle
