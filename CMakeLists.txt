@@ -6,6 +6,12 @@ find_package(cmake-napi REQUIRED PATHS node_modules/cmake-napi)
 
 project(quickbit_native C)
 
+bare_target(target)
+
+if(target MATCHES "win32")
+  add_compile_options(/MT$<$<CONFIG:Debug>:d>)
+endif()
+
 fetch_package("github:holepunchto/libquickbit#5ecf908")
 
 add_bare_module(quickbit_native_bare)
