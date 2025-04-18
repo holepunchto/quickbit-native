@@ -1,6 +1,5 @@
 #include <bare.h>
 #include <js.h>
-#define FASTCALL_DIAGNOSTICS
 #include <jstl.h>
 #include <quickbit.h>
 #include <stdlib.h>
@@ -18,8 +17,8 @@ struct js_type_info_t<js__object_t> {
   }
 
   static int unmarshall(js_env_t *env, js_value_t *value, js__object_t &out) {
-    assert(0 && "unreachable");
-    return -1;
+    out.value = value;
+    return 0;
   }
 };
 
@@ -30,7 +29,7 @@ quickbit_napi_argv_chunks(js_env_t *env, std::vector<js__object_t> &array) {
   std::vector<quickbit_chunk_t> chunks;
   chunks.reserve(array.size());
 
-  for (auto obj : array) {
+  for (auto &obj : array) {
     js_typedarray_t<uint8_t> field;
     err = js_get_property(env, obj, "field", field);
     assert(err == 0);
