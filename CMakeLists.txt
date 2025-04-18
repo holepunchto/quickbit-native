@@ -8,8 +8,6 @@ project(quickbit_native CXX)
 
 bare_target(target)
 
-add_compile_options(-fcolor-diagnostics)
-
 if(target MATCHES "win32")
   add_compile_options(/MT$<$<CONFIG:Debug>:d>)
 endif()
