@@ -1,10 +1,11 @@
 #include <bare.h>
 #include <js.h>
+#define FASTCALL_DIAGNOSTICS
 #include <jstl.h>
 #include <quickbit.h>
 #include <stdlib.h>
 
-// workaround: `js_object_t` template clash & `js_array_t` missing marshallers
+// workaround: `js_object_t` missing template
 struct js__object_t : js_object_t {};
 
 template <>
@@ -12,13 +13,13 @@ struct js_type_info_t<js__object_t> {
   using type = js_value_t *;
 
   static auto
-    signature() {
-      return js_object;
-    }
+  signature() {
+    return js_object;
+  }
 
   static int unmarshall(js_env_t *env, js_value_t *value, js__object_t &out) {
-    out.value = value;
-    return 0;
+    assert(0 && "unreachable");
+    return -1;
   }
 };
 
@@ -29,7 +30,7 @@ quickbit_napi_argv_chunks(js_env_t *env, std::vector<js__object_t> &array) {
   std::vector<quickbit_chunk_t> chunks;
   chunks.reserve(array.size());
 
-  for (js_object_t &obj : array) {
+  for (auto obj : array) {
     js_typedarray_t<uint8_t> field;
     err = js_get_property(env, obj, "field", field);
     assert(err == 0);
