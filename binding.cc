@@ -4,26 +4,8 @@
 #include <quickbit.h>
 #include <stdlib.h>
 
-// workaround: `js_object_t` missing template
-struct js__object_t : js_object_t {};
-
-template <>
-struct js_type_info_t<js__object_t> {
-  using type = js_value_t *;
-
-  static auto
-  signature() {
-    return js_object;
-  }
-
-  static int unmarshall(js_env_t *env, js_value_t *value, js__object_t &out) {
-    out.value = value;
-    return 0;
-  }
-};
-
 static inline auto
-quickbit_napi_argv_chunks(js_env_t *env, std::vector<js__object_t> &array) {
+quickbit_napi_argv_chunks(js_env_t *env, std::vector<js_object_t> &array) {
   int err;
 
   std::vector<quickbit_chunk_t> chunks;
@@ -112,7 +94,7 @@ quickbit_napi_clear (
   js_env_t *env,
   js_receiver_t,
   js_typedarray_t<uint8_t> field_buf,
-  std::vector<js__object_t> chunks_array
+  std::vector<js_object_t> chunks_array
 ) {
   int err;
 
@@ -187,7 +169,7 @@ quickbit_napi_index_init_sparse (
   js_env_t *env,
   js_receiver_t,
   js_typedarray_t<uint8_t> index_buf,
-  std::vector<js__object_t> chunks_array
+  std::vector<js_object_t> chunks_array
 ) {
   int err;
 

@@ -13,7 +13,7 @@ if(target MATCHES "win32")
 endif()
 
 fetch_package("github:holepunchto/libquickbit#5ecf908")
-fetch_package("github:holepunchto/libjstl#2c6bb51")
+fetch_package("github:holepunchto/libjstl#cf64d9e")
 
 add_bare_module(quickbit_native_bare)
 
@@ -52,6 +52,7 @@ target_link_libraries(
     quickbit
     simdle
 )
+
 resolve_node_module(bare-compat-napi compat)
 
 target_include_directories(
