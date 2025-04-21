@@ -38,7 +38,7 @@ struct js_type_info_t<quickbit_chunk_t> {
   }
 };
 
-uint32_t
+static inline uint32_t
 quickbit_napi_get (
   js_env_t *env,
   js_receiver_t,
@@ -55,7 +55,7 @@ quickbit_napi_get (
   return quickbit_get(field.data(), field.size_bytes(), bit);
 }
 
-uint32_t
+static inline uint32_t
 quickbit_napi_set (
   js_env_t *env,
   js_receiver_t,
@@ -73,7 +73,7 @@ quickbit_napi_set (
   return quickbit_set(field.data(), field.size_bytes(), bit, value);
 }
 
-void
+static inline void
 quickbit_napi_fill (
   js_env_t *env,
   js_receiver_t,
@@ -92,7 +92,7 @@ quickbit_napi_fill (
   quickbit_fill(field.data(), field.size_bytes(), value, start, end);
 }
 
-void
+static inline void
 quickbit_napi_clear (
   js_env_t *env,
   js_receiver_t,
@@ -110,7 +110,7 @@ quickbit_napi_clear (
   }
 }
 
-int32_t
+static inline int32_t
 quickbit_napi_find_first (
   js_env_t *env,
   js_receiver_t,
@@ -127,7 +127,7 @@ quickbit_napi_find_first (
   return quickbit_find_first(field.data(), field.size_bytes(), value, position);
 }
 
-int32_t
+static inline int32_t
 quickbit_napi_find_last (
   js_env_t *env,
   js_receiver_t,
@@ -144,7 +144,7 @@ quickbit_napi_find_last (
   return quickbit_find_last(field.data(), field.size_bytes(), value, position);
 }
 
-void
+static inline void
 quickbit_napi_index_init (
   js_env_t *env,
   js_receiver_t,
@@ -164,7 +164,7 @@ quickbit_napi_index_init (
   quickbit_index_init((uint8_t *) index, field.data(), field.size_bytes());
 }
 
-void
+static inline void
 quickbit_napi_index_init_sparse (
   js_env_t *env,
   js_receiver_t,
@@ -180,7 +180,7 @@ quickbit_napi_index_init_sparse (
   quickbit_index_init_sparse((uint8_t *) index, chunks.data(), chunks.size());
 }
 
-uint32_t
+static inline uint32_t
 quickbit_napi_index_update (
   js_env_t *env,
   js_receiver_t,
@@ -201,7 +201,7 @@ quickbit_napi_index_update (
   return quickbit_index_update((uint8_t *) index, field.data(), field.size_bytes(), bit);
 }
 
-uint32_t
+static inline uint32_t
 quickbit_napi_index_update_sparse (
   js_env_t *env,
   js_receiver_t,
@@ -229,7 +229,7 @@ quickbit_napi_index_update_sparse (
   return quickbit_index_update_sparse((uint8_t *) index, &chunk, 1, bit);
 }
 
-uint32_t
+static inline uint32_t
 quickbit_napi_skip_first (
   js_env_t *env,
   js_receiver_t,
@@ -247,7 +247,7 @@ quickbit_napi_skip_first (
   return quickbit_skip_first((uint8_t *) index, len, value, position);
 }
 
-uint32_t
+static inline uint32_t
 quickbit_napi_skip_last (
   js_env_t *env,
   js_receiver_t,
@@ -265,7 +265,7 @@ quickbit_napi_skip_last (
   return quickbit_skip_last((uint8_t *) index, len, value, position);
 }
 
-static js_value_t *
+js_value_t *
 bare_addon_exports(js_env_t *env, js_value_t *exports) {
   int err;
 
