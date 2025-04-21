@@ -4,7 +4,7 @@ find_package(cmake-fetch REQUIRED PATHS node_modules/cmake-fetch)
 find_package(cmake-bare REQUIRED PATHS node_modules/cmake-bare)
 find_package(cmake-napi REQUIRED PATHS node_modules/cmake-napi)
 
-project(quickbit_native CXX)
+project(quickbit_native C CXX)
 
 bare_target(target)
 
