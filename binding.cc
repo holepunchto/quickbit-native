@@ -263,7 +263,7 @@ quickbit_napi_skip_last(
 }
 
 static js_value_t *
-bare_addon_exports(js_env_t *env, js_value_t *exports) {
+quickbit_napi_exports(js_env_t *env, js_value_t *exports) {
   int err;
 
   err = js_set_property<uint32_t>(env, exports, "sizeof_quickbit_index_t", sizeof(quickbit_index_t));
@@ -308,4 +308,4 @@ bare_addon_exports(js_env_t *env, js_value_t *exports) {
   return exports;
 }
 
-BARE_MODULE(bare_addon, bare_addon_exports)
+BARE_MODULE(quickbit_napi, quickbit_napi_exports)
