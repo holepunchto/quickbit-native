@@ -30,7 +30,7 @@ struct js_type_info_t<quickbit_chunk_t> {
 
     chunk = {
       .field = view.data(),
-      .len = view.size_bytes(),
+      .len = view.size(),
       .offset = offset,
     };
 
