@@ -13,7 +13,7 @@ struct js_type_info_t<quickbit_chunk_t> {
   }
 
   static auto
-  unmarshall (js_env_t *env, js_value_t *value, quickbit_chunk_t &chunk) {
+  unmarshall(js_env_t *env, js_value_t *value, quickbit_chunk_t &chunk) {
     int err;
 
     js_typedarray_t<uint8_t> field;
@@ -39,7 +39,7 @@ struct js_type_info_t<quickbit_chunk_t> {
 };
 
 static inline uint32_t
-quickbit_napi_get (
+quickbit_napi_get(
   js_env_t *env,
   js_receiver_t,
   js_typedarray_t<uint8_t> field_buf,
@@ -48,7 +48,6 @@ quickbit_napi_get (
   int err;
 
   std::span<uint8_t> field;
-
   err = js_get_typedarray_info(env, field_buf, field);
   assert(err == 0);
 
@@ -56,7 +55,7 @@ quickbit_napi_get (
 }
 
 static inline uint32_t
-quickbit_napi_set (
+quickbit_napi_set(
   js_env_t *env,
   js_receiver_t,
   js_typedarray_t<uint8_t> field_buf,
@@ -74,7 +73,7 @@ quickbit_napi_set (
 }
 
 static inline void
-quickbit_napi_fill (
+quickbit_napi_fill(
   js_env_t *env,
   js_receiver_t,
   js_typedarray_t<uint8_t> field_buf,
@@ -92,7 +91,7 @@ quickbit_napi_fill (
 }
 
 static inline void
-quickbit_napi_clear (
+quickbit_napi_clear(
   js_env_t *env,
   js_receiver_t,
   js_typedarray_t<uint8_t> field_buf,
@@ -104,13 +103,13 @@ quickbit_napi_clear (
   err = js_get_typedarray_info(env, field_buf, field);
   assert(err == 0);
 
-  for (auto chunk: chunks) {
+  for (auto chunk : chunks) {
     quickbit_clear(field.data(), field.size(), &chunk);
   }
 }
 
 static inline int32_t
-quickbit_napi_find_first (
+quickbit_napi_find_first(
   js_env_t *env,
   js_receiver_t,
   js_typedarray_t<uint8_t> field_buf,
@@ -127,7 +126,7 @@ quickbit_napi_find_first (
 }
 
 static inline int32_t
-quickbit_napi_find_last (
+quickbit_napi_find_last(
   js_env_t *env,
   js_receiver_t,
   js_typedarray_t<uint8_t> field_buf,
@@ -144,7 +143,7 @@ quickbit_napi_find_last (
 }
 
 static inline void
-quickbit_napi_index_init (
+quickbit_napi_index_init(
   js_env_t *env,
   js_receiver_t,
   js_typedarray_t<uint8_t> index_buf,
@@ -164,7 +163,7 @@ quickbit_napi_index_init (
 }
 
 static inline void
-quickbit_napi_index_init_sparse (
+quickbit_napi_index_init_sparse(
   js_env_t *env,
   js_receiver_t,
   js_typedarray_t<uint8_t> index_buf,
@@ -180,7 +179,7 @@ quickbit_napi_index_init_sparse (
 }
 
 static inline uint32_t
-quickbit_napi_index_update (
+quickbit_napi_index_update(
   js_env_t *env,
   js_receiver_t,
   js_typedarray_t<uint8_t> index_buf,
@@ -201,7 +200,7 @@ quickbit_napi_index_update (
 }
 
 static inline uint32_t
-quickbit_napi_index_update_sparse (
+quickbit_napi_index_update_sparse(
   js_env_t *env,
   js_receiver_t,
   js_typedarray_t<uint8_t> index_buf,
@@ -229,7 +228,7 @@ quickbit_napi_index_update_sparse (
 }
 
 static inline uint32_t
-quickbit_napi_skip_first (
+quickbit_napi_skip_first(
   js_env_t *env,
   js_receiver_t,
   js_typedarray_t<uint8_t> index_buf,
@@ -247,7 +246,7 @@ quickbit_napi_skip_first (
 }
 
 static inline uint32_t
-quickbit_napi_skip_last (
+quickbit_napi_skip_last(
   js_env_t *env,
   js_receiver_t,
   js_typedarray_t<uint8_t> index_buf,
