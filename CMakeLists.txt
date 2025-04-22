@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.25)
 
-find_package(cmake-bare REQUIRED PATHS node_modules/cmake-bare)
 find_package(cmake-fetch REQUIRED PATHS node_modules/cmake-fetch)
+find_package(cmake-bare REQUIRED PATHS node_modules/cmake-bare)
 find_package(cmake-napi REQUIRED PATHS node_modules/cmake-napi)
 
-project(quickbit_native C)
+project(quickbit_native C CXX)
 
 bare_target(target)
 
@@ -13,13 +13,14 @@ if(target MATCHES "win32")
 endif()
 
 fetch_package("github:holepunchto/libquickbit#5ecf908")
+fetch_package("github:holepunchto/libjstl#69cd2be")
 
 add_bare_module(quickbit_native_bare)
 
 target_sources(
   ${quickbit_native_bare}
   PRIVATE
-    binding.c
+    binding.cc
 )
 
 target_link_libraries(
@@ -27,6 +28,7 @@ target_link_libraries(
   PRIVATE
     $<TARGET_OBJECTS:quickbit>
     $<TARGET_OBJECTS:simdle>
+    jstl
   PUBLIC
     quickbit
     simdle
@@ -37,7 +39,7 @@ add_napi_module(quickbit_native_node)
 target_sources(
   ${quickbit_native_node}
   PRIVATE
-    binding.c
+    binding.cc
 )
 
 target_link_libraries(
@@ -45,7 +47,16 @@ target_link_libraries(
   PRIVATE
     $<TARGET_OBJECTS:quickbit>
     $<TARGET_OBJECTS:simdle>
+    jstl
   PUBLIC
     quickbit
     simdle
+)
+
+resolve_node_module(bare-compat-napi compat)
+
+target_include_directories(
+  ${quickbit_native_node}
+  PRIVATE
+    "${compat}/include"
 )
