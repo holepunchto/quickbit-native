@@ -65,7 +65,6 @@ quickbit_napi_set(
   int err;
 
   std::span<uint8_t> field;
-
   err = js_get_typedarray_info(env, field_buf, field);
   assert(err == 0);
 
