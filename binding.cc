@@ -2,6 +2,7 @@
 #include <js.h>
 #include <jstl.h>
 #include <quickbit.h>
+#include <array>
 
 struct js_anybuffer_t {
   uint8_t *data;
