@@ -30,7 +30,7 @@ exports.fill = function fill (field, value, start = 0, end = field.byteLength * 
 }
 
 exports.clear = function clear (field, ...chunks) {
-  binding.quickbit_napi_clear(asBuffer(field), asBufferChunks(chunks))
+  binding.quickbit_napi_clear(asBuffer(field), chunks.map(asBufferChunk))
 }
 
 exports.findFirst = function findFirst (field, value, position = 0) {
@@ -59,10 +59,8 @@ function asBuffer (field) {
   return Buffer.from(field)
 }
 
-function asBufferChunks (chunks) {
-  return chunks.map((chunk) => {
-    return { field: asBuffer(chunk.field), offset: chunk.offset }
-  })
+function asBufferChunk (chunk) {
+  return { field: asBuffer(chunk.field), offset: chunk.offset }
 }
 
 const Index = exports.Index = class Index {
@@ -147,7 +145,7 @@ class SparseIndex extends Index {
     super(byteLength)
     this.chunks = chunks
 
-    binding.quickbit_napi_index_init_sparse(this.handle, asBufferChunks(this.chunks))
+    binding.quickbit_napi_index_init_sparse(this.handle, this.chunks.map(asBufferChunk))
   }
 
   get byteLength () {
