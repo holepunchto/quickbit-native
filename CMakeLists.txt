@@ -13,8 +13,8 @@ if(target MATCHES "win32")
 endif()
 
 fetch_package("github:holepunchto/libquickbit#5ecf908")
-# fetch_package("github:holepunchto/libjstl#71ab461")
-add_subdirectory("../libjstl" "${CMAKE_BINARY_DIR}/libjstl")
+fetch_package("github:holepunchto/libjstl#69d56e")
+# add_subdirectory("../libjstl" "${CMAKE_BINARY_DIR}/libjstl")
 
 add_bare_module(quickbit_native_bare)
 
