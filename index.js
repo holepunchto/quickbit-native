@@ -1,4 +1,3 @@
-const b4a = require('b4a')
 const binding = require('./binding')
 
 exports.get = function get (field, bit) {
@@ -7,7 +6,7 @@ exports.get = function get (field, bit) {
   if (bit < 0) bit += n
   if (bit < 0 || bit >= n) return false
 
-  return binding.quickbit_napi_get(field, bit) !== 0
+  return binding.quickbit_napi_get(asBuffer(field), bit) !== 0
 }
 
 exports.set = function set (field, bit, value = true) {
@@ -16,7 +15,7 @@ exports.set = function set (field, bit, value = true) {
   if (bit < 0) bit += n
   if (bit < 0 || bit >= n) return false
 
-  return binding.quickbit_napi_set(field, bit, value ? 1 : 0) !== 0
+  return binding.quickbit_napi_set(asBuffer(field), bit, value ? 1 : 0) !== 0
 }
 
 exports.fill = function fill (field, value, start = 0, end = field.byteLength * 8) {
@@ -26,7 +25,7 @@ exports.fill = function fill (field, value, start = 0, end = field.byteLength * 
   if (end < 0) end += n
   if (start < 0 || start >= field.byteLength * 8 || start >= end) return field
 
-  binding.quickbit_napi_fill(field, value ? 1 : 0, start, end)
+  binding.quickbit_napi_fill(asBuffer(field), value ? 1 : 0, start, end)
   return field
 }
 
@@ -41,7 +40,7 @@ exports.findFirst = function findFirst (field, value, position = 0) {
   if (position < 0) position = 0
   if (position >= n) return -1
 
-  return binding.quickbit_napi_find_first(field, value ? 1 : 0, position)
+  return binding.quickbit_napi_find_first(asBuffer(field), value ? 1 : 0, position)
 }
 
 exports.findLast = function findLast (field, value, position = field.byteLength * 8 - 1) {
@@ -51,7 +50,13 @@ exports.findLast = function findLast (field, value, position = field.byteLength 
   if (position < 0) return -1
   if (position >= n) position = n - 1
 
-  return binding.quickbit_napi_find_last(field, value ? 1 : 0, position)
+  return binding.quickbit_napi_find_last(asBuffer(field), value ? 1 : 0, position)
+}
+
+function asBuffer (field) {
+  if (Buffer.isBuffer(field)) return field
+  if (ArrayBuffer.isView(field)) return Buffer.from(field.buffer, field.byteOffset, field.byteLength)
+  return Buffer.from(field)
 }
 
 const Index = exports.Index = class Index {
@@ -65,7 +70,7 @@ const Index = exports.Index = class Index {
 
   constructor (byteLength) {
     this._byteLength = byteLength
-    this.handle = b4a.allocUnsafe(binding.sizeof_quickbit_index_t)
+    this.handle = Buffer.allocUnsafe(binding.sizeof_quickbit_index_t)
   }
 
   get byteLength () {

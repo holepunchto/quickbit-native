@@ -160,12 +160,10 @@ test('findFirst various typedarrays', (t) => {
   idx = findFirst(bField, true)
   t.is(idx, 8 * 3 + 7, 'Buffer')
 
-  /* TODO
   const abField = u32field.buffer
   t.ok(abField instanceof ArrayBuffer)
   idx = findFirst(abField, true)
   t.is(idx, 32 * 3 + 30, 'ArrayBuffer')
-  */
 })
 
 test('findLast various typedarrays', (t) => {
