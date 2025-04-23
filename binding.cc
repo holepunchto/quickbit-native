@@ -1,4 +1,5 @@
 #include <bare.h>
+#include <cstdint>
 #include <js.h>
 #include <jstl.h>
 #include <quickbit.h>
@@ -120,6 +121,28 @@ quickbit_napi_find_first(
   assert(err == 0);
 
   return quickbit_find_first(field.data(), field.size(), value, position);
+}
+
+static inline int32_t
+quickbit_napi_find_first_experimental(
+  js_env_t *env,
+  js_receiver_t,
+  js_object_t buffer,
+  uint32_t offset,
+  uint32_t len,
+  uint32_t value,
+  int32_t position
+) {
+  int err;
+
+  uint8_t *slab;
+  size_t slab_len;
+
+  err = js_get_arraybuffer_info(env, buffer, (void **) &slab, &slab_len);
+  assert(err == 0);
+  assert(offset + len <= slab_len);
+
+  return quickbit_find_first(slab + offset, len, value, position);
 }
 
 static inline int32_t
@@ -301,6 +324,9 @@ quickbit_napi_exports(js_env_t *env, js_value_t *exports) {
   assert(err == 0);
 
   err = js_set_property<quickbit_napi_skip_last>(env, exports, "quickbit_napi_skip_last");
+  assert(err == 0);
+
+  err = js_set_property<quickbit_napi_find_first_experimental, false, false>(env, exports, "quickbit_napi_find_first_experimental");
   assert(err == 0);
 
   return exports;

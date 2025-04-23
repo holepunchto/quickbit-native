@@ -40,7 +40,18 @@ exports.findFirst = function findFirst (field, value, position = 0) {
   if (position < 0) position = 0
   if (position >= n) return -1
 
-  return binding.quickbit_napi_find_first(toBuffer(field), value ? 1 : 0, position)
+  // return binding.quickbit_napi_find_first(toBuffer(field), value ? 1 : 0, position)
+
+  // experimental
+  let { buffer, byteOffset, byteLength } = field
+
+  if (!buffer && field instanceof ArrayBuffer) {
+    buffer = field
+    byteOffset ||= 0
+  }
+  // if (!buffer) throw new Error('invalid field')
+
+  return binding.quickbit_napi_find_first_experimental(buffer, byteOffset, byteLength, value ? 1 : 0, position)
 }
 
 exports.findLast = function findLast (field, value, position = field.byteLength * 8 - 1) {
