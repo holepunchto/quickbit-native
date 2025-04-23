@@ -12,6 +12,7 @@ struct js_type_info_t<quickbit_chunk_t> {
     return js_object;
   }
 
+  template <bool checked>
   static auto
   unmarshall(js_env_t *env, js_value_t *value, quickbit_chunk_t &chunk) {
     int err;
@@ -266,7 +267,7 @@ static js_value_t *
 quickbit_napi_exports(js_env_t *env, js_value_t *exports) {
   int err;
 
-  err = js_set_property<uint32_t>(env, exports, "sizeof_quickbit_index_t", sizeof(quickbit_index_t));
+  err = js_set_property(env, exports, "sizeof_quickbit_index_t", uint32_t(sizeof(quickbit_index_t)));
   assert(err == 0);
 
   err = js_set_property<quickbit_napi_get>(env, exports, "quickbit_napi_get");
