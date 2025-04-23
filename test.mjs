@@ -1,7 +1,7 @@
 import test from 'brittle'
 import b4a from 'b4a'
 
-import { get, set, fill, clear, findFirst, Index } from './index.js'
+import { get, set, fill, clear, findFirst, findLast, Index } from './index.js'
 
 test('get', (t) => {
   const field = b4a.alloc(1)
@@ -141,4 +141,63 @@ test('large index', (t) => {
   const index = Index.from(field)
 
   t.is(index.skipFirst(false, 0), 999936)
+})
+
+test('findFirst various typedarrays', (t) => {
+  const u32field = Uint32Array.of(0, 0, 0, 1 << 30)
+  let idx = findFirst(u32field, true)
+  t.is(idx, 32 * 3 + 30, 'Uint32Array')
+
+  const u16field = Uint16Array.of(0, 0, 0, 1 << 15)
+  idx = findFirst(u16field, true)
+  t.is(idx, 16 * 3 + 15, 'Uint16Array')
+
+  const u8field = Uint8Array.of(0, 0, 0, 1 << 7)
+  idx = findFirst(u8field, true)
+  t.is(idx, 8 * 3 + 7, 'Uint8Array')
+
+  const bField = Buffer.from([0, 0, 0, 1 << 7])
+  idx = findFirst(bField, true)
+  t.is(idx, 8 * 3 + 7, 'Buffer')
+
+  const abField = u32field.buffer
+  t.ok(abField instanceof ArrayBuffer)
+  idx = findFirst(abField, true)
+  t.is(idx, 32 * 3 + 30, 'ArrayBuffer')
+})
+
+test('findLast various typedarrays', (t) => {
+  let bit = 32 * 3 + 25
+  const u32field = new Uint32Array(4)
+  set(u32field, bit, true)
+  set(u32field, bit + 1, true)
+  set(u32field, bit + 2, true)
+  let idx = findLast(u32field, false, bit + 2)
+  t.is(idx, bit - 1, 'Uint32Array')
+
+  bit = 16 * 3 + 9
+  const u16field = new Uint16Array(4)
+  set(u16field, bit, true)
+  set(u16field, bit + 1, true)
+  idx = findLast(u16field, false, bit + 1)
+  t.is(idx, bit - 1, 'Uint16Array')
+
+  const u8field = new Uint8Array(4)
+  bit = 8 * 3 + 4
+  set(u8field, bit, true)
+  set(u8field, bit + 1, true)
+  idx = findLast(u8field, false, bit + 1)
+  t.is(idx, bit - 1, 'Uint8Array')
+
+  const bField = Buffer.alloc(4)
+  set(bField, bit, true)
+  set(bField, bit + 1, true)
+  idx = findLast(bField, false, bit + 1)
+  t.is(idx, bit - 1, 'Buffer')
+
+  const abField = u32field.buffer
+  bit = 32 * 3 + 25
+  t.ok(abField instanceof ArrayBuffer)
+  idx = findLast(u32field, false, bit + 1)
+  t.is(idx, bit - 1, 'ArrayBuffer')
 })
