@@ -101,7 +101,7 @@ const Index = exports.Index = class Index {
 class DenseIndex extends Index {
   constructor (field, byteLength) {
     super(byteLength)
-    this.field = field
+    this.field = asBuffer(field)
 
     binding.quickbit_napi_index_init(this.handle, this.field)
   }
@@ -164,6 +164,6 @@ class SparseIndex extends Index {
 
     if (chunk === null) return false
 
-    return binding.quickbit_napi_index_update_sparse(this.handle, chunk.field, chunk.offset, bit) !== 0
+    return binding.quickbit_napi_index_update_sparse(this.handle, asBuffer(chunk.field), chunk.offset, bit) !== 0
   }
 }
