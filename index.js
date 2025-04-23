@@ -30,7 +30,9 @@ exports.fill = function fill (field, value, start = 0, end = field.byteLength * 
 }
 
 exports.clear = function clear (field, ...chunks) {
-  binding.quickbit_napi_clear(field, chunks)
+  binding.quickbit_napi_clear(asBuffer(field), chunks.map((chunk) => {
+    return { field: asBuffer(chunk.field), offset: chunk.offset }
+  }))
 }
 
 exports.findFirst = function findFirst (field, value, position = 0) {
@@ -101,9 +103,9 @@ const Index = exports.Index = class Index {
 class DenseIndex extends Index {
   constructor (field, byteLength) {
     super(byteLength)
-    this.field = asBuffer(field)
+    this.field = field
 
-    binding.quickbit_napi_index_init(this.handle, this.field)
+    binding.quickbit_napi_index_init(this.handle, asBuffer(this.field))
   }
 
   get byteLength () {
@@ -117,7 +119,7 @@ class DenseIndex extends Index {
     if (bit < 0) bit += n
     if (bit < 0 || bit >= n) return false
 
-    return binding.quickbit_napi_index_update(this.handle, this.field, bit) !== 0
+    return binding.quickbit_napi_index_update(this.handle, asBuffer(this.field), bit) !== 0
   }
 }
 
@@ -141,7 +143,9 @@ class SparseIndex extends Index {
     super(byteLength)
     this.chunks = chunks
 
-    binding.quickbit_napi_index_init_sparse(this.handle, this.chunks)
+    binding.quickbit_napi_index_init_sparse(this.handle, this.chunks.map((chunk) => {
+      return { field: asBuffer(chunk.field), offset: chunk.offset }
+    }))
   }
 
   get byteLength () {
