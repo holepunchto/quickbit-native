@@ -1,5 +1,4 @@
 #include <bare.h>
-#include <cstdint>
 #include <js.h>
 #include <jstl.h>
 #include <quickbit.h>
