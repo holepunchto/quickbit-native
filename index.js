@@ -6,7 +6,7 @@ exports.get = function get (field, bit) {
   if (bit < 0) bit += n
   if (bit < 0 || bit >= n) return false
 
-  return binding.quickbit_napi_get(asBuffer(field), bit) !== 0
+  return binding.quickbit_napi_get(toBuffer(field), bit) !== 0
 }
 
 exports.set = function set (field, bit, value = true) {
@@ -15,7 +15,7 @@ exports.set = function set (field, bit, value = true) {
   if (bit < 0) bit += n
   if (bit < 0 || bit >= n) return false
 
-  return binding.quickbit_napi_set(asBuffer(field), bit, value ? 1 : 0) !== 0
+  return binding.quickbit_napi_set(toBuffer(field), bit, value ? 1 : 0) !== 0
 }
 
 exports.fill = function fill (field, value, start = 0, end = field.byteLength * 8) {
@@ -25,12 +25,12 @@ exports.fill = function fill (field, value, start = 0, end = field.byteLength * 
   if (end < 0) end += n
   if (start < 0 || start >= field.byteLength * 8 || start >= end) return field
 
-  binding.quickbit_napi_fill(asBuffer(field), value ? 1 : 0, start, end)
+  binding.quickbit_napi_fill(toBuffer(field), value ? 1 : 0, start, end)
   return field
 }
 
 exports.clear = function clear (field, ...chunks) {
-  binding.quickbit_napi_clear(field, chunks)
+  binding.quickbit_napi_clear(toBuffer(field), chunks.map(toBufferChunk))
 }
 
 exports.findFirst = function findFirst (field, value, position = 0) {
@@ -40,7 +40,7 @@ exports.findFirst = function findFirst (field, value, position = 0) {
   if (position < 0) position = 0
   if (position >= n) return -1
 
-  return binding.quickbit_napi_find_first(asBuffer(field), value ? 1 : 0, position)
+  return binding.quickbit_napi_find_first(toBuffer(field), value ? 1 : 0, position)
 }
 
 exports.findLast = function findLast (field, value, position = field.byteLength * 8 - 1) {
@@ -50,13 +50,17 @@ exports.findLast = function findLast (field, value, position = field.byteLength 
   if (position < 0) return -1
   if (position >= n) position = n - 1
 
-  return binding.quickbit_napi_find_last(asBuffer(field), value ? 1 : 0, position)
+  return binding.quickbit_napi_find_last(toBuffer(field), value ? 1 : 0, position)
 }
 
-function asBuffer (field) {
+function toBuffer (field) {
   if (Buffer.isBuffer(field)) return field
   if (ArrayBuffer.isView(field)) return Buffer.from(field.buffer, field.byteOffset, field.byteLength)
   return Buffer.from(field)
+}
+
+function toBufferChunk (chunk) {
+  return { field: toBuffer(chunk.field), offset: chunk.offset }
 }
 
 const Index = exports.Index = class Index {
@@ -101,9 +105,9 @@ const Index = exports.Index = class Index {
 class DenseIndex extends Index {
   constructor (field, byteLength) {
     super(byteLength)
-    this.field = asBuffer(field)
+    this.field = field
 
-    binding.quickbit_napi_index_init(this.handle, this.field)
+    binding.quickbit_napi_index_init(this.handle, toBuffer(this.field))
   }
 
   get byteLength () {
@@ -117,7 +121,7 @@ class DenseIndex extends Index {
     if (bit < 0) bit += n
     if (bit < 0 || bit >= n) return false
 
-    return binding.quickbit_napi_index_update(this.handle, this.field, bit) !== 0
+    return binding.quickbit_napi_index_update(this.handle, toBuffer(this.field), bit) !== 0
   }
 }
 
@@ -141,7 +145,7 @@ class SparseIndex extends Index {
     super(byteLength)
     this.chunks = chunks
 
-    binding.quickbit_napi_index_init_sparse(this.handle, this.chunks)
+    binding.quickbit_napi_index_init_sparse(this.handle, this.chunks.map(toBufferChunk))
   }
 
   get byteLength () {
@@ -164,6 +168,6 @@ class SparseIndex extends Index {
 
     if (chunk === null) return false
 
-    return binding.quickbit_napi_index_update_sparse(this.handle, asBuffer(chunk.field), chunk.offset, bit) !== 0
+    return binding.quickbit_napi_index_update_sparse(this.handle, toBuffer(chunk.field), chunk.offset, bit) !== 0
   }
 }

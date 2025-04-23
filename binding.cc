@@ -7,10 +7,7 @@ template <>
 struct js_type_info_t<quickbit_chunk_t> {
   using type = js_value_t *;
 
-  static auto
-  signature() {
-    return js_object;
-  }
+  static constexpr auto signature = js_object;
 
   template <bool checked>
   static auto

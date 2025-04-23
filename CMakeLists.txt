@@ -13,7 +13,7 @@ if(target MATCHES "win32")
 endif()
 
 fetch_package("github:holepunchto/libquickbit#5ecf908")
-fetch_package("github:holepunchto/libjstl#fe8150a")
+fetch_package("github:holepunchto/libjstl#71ab461")
 
 add_bare_module(quickbit_native_bare)
 
