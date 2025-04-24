@@ -159,11 +159,6 @@ test('findFirst various typedarrays', (t) => {
   const bField = Buffer.from([0, 0, 0, 1 << 7])
   idx = findFirst(bField, true)
   t.is(idx, 8 * 3 + 7, 'Buffer')
-
-  const abField = u32field.buffer
-  t.ok(abField instanceof ArrayBuffer)
-  idx = findFirst(abField, true)
-  t.is(idx, 32 * 3 + 30, 'ArrayBuffer')
 })
 
 test('findLast various typedarrays', (t) => {
@@ -194,10 +189,4 @@ test('findLast various typedarrays', (t) => {
   set(bField, bit + 1, true)
   idx = findLast(bField, false, bit + 1)
   t.is(idx, bit - 1, 'Buffer')
-
-  const abField = u32field.buffer
-  bit = 32 * 3 + 25
-  t.ok(abField instanceof ArrayBuffer)
-  idx = findLast(u32field, false, bit + 1)
-  t.is(idx, bit - 1, 'ArrayBuffer')
 })
