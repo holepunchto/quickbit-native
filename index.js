@@ -32,7 +32,7 @@ exports.fill = function fill (field, value, start = 0, end = field.byteLength * 
 exports.clear = function clear (field, ...chunks) {
   binding.quickbit_napi_clear(toBuffer(field), chunks.map(toBufferChunk))
 }
-
+const inputBuffer = Buffer.from(binding.__input)
 exports.findFirst = function findFirst (field, value, position = 0) {
   const n = field.byteLength * 8
 
@@ -40,18 +40,28 @@ exports.findFirst = function findFirst (field, value, position = 0) {
   if (position < 0) position = 0
   if (position >= n) return -1
 
-  // return binding.quickbit_napi_find_first(toBuffer(field), value ? 1 : 0, position)
+  switch (1) {
+    // scope + env
+    case 0:
+      return binding.quickbit_napi_find_first(toBuffer(field), value ? 1 : 0, position)
 
-  // experimental
-  let { buffer, byteOffset, byteLength } = field
+    // experimental (scopeless)
+    case 1: {
+      let { buffer, byteOffset, byteLength } = field
 
-  if (!buffer && field instanceof ArrayBuffer) {
-    buffer = field
-    byteOffset ||= 0
+      if (!buffer && field instanceof ArrayBuffer) {
+        buffer = field
+        byteOffset ||= 0
+      }
+
+      return binding.quickbit_napi_find_first_experimental(buffer, byteOffset, byteLength, value ? 1 : 0, position)
+    }
+
+    // experimental (envless, scopeless)
+    case 2:
+      field.copy(inputBuffer)
+      return binding.quickbit_napi_find_first_envless(field.byteLength, value ? 1 : 0, position)
   }
-  // if (!buffer) throw new Error('invalid field')
-
-  return binding.quickbit_napi_find_first_experimental(buffer, byteOffset, byteLength, value ? 1 : 0, position)
 }
 
 exports.findLast = function findLast (field, value, position = field.byteLength * 8 - 1) {

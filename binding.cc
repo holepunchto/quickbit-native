@@ -282,9 +282,36 @@ quickbit_napi_skip_last(
   return quickbit_skip_last((uint8_t *) index, len, value, position);
 }
 
+
+static uint8_t *input_buffer;
+static const size_t input_length = 1 << 20;
+
+static inline int32_t
+quickbit_napi_find_first_envless(
+  js_receiver_t,
+  uint32_t len,
+  uint32_t value,
+  int32_t position
+) {
+  return quickbit_find_first(input_buffer, len, value, position);
+}
+
+
 static js_value_t *
 quickbit_napi_exports(js_env_t *env, js_value_t *exports) {
   int err;
+
+  input_buffer = (uint8_t *) malloc(input_length);
+
+  js_value_t *input;
+  err = js_create_external_arraybuffer(env, input_buffer, input_length, NULL, NULL, &input);
+  assert(err == 0);
+  err = js_set_named_property(env, exports, "__input", input);
+  assert(err == 0);
+  err = js_set_property<quickbit_napi_find_first_envless, false, false>(env, exports, "quickbit_napi_find_first_envless");
+  assert(err == 0);
+
+  // ----------------
 
   err = js_set_property(env, exports, "sizeof_quickbit_index_t", uint32_t(sizeof(quickbit_index_t)));
   assert(err == 0);
