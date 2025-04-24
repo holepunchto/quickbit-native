@@ -54,9 +54,8 @@ exports.findLast = function findLast (field, value, position = field.byteLength 
 }
 
 function toBuffer (field) {
-  if (Buffer.isBuffer(field)) return field
-  if (ArrayBuffer.isView(field)) return Buffer.from(field.buffer, field.byteOffset, field.byteLength)
-  return Buffer.from(field)
+  if (field.BYTES_PER_ELEMENT === 1) return field
+  return new Uint8Array(field.buffer, field.byteOffset, field.byteLength)
 }
 
 function toBufferChunk (chunk) {
