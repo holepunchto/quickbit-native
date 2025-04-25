@@ -123,28 +123,6 @@ quickbit_napi_find_first(
 }
 
 static inline int32_t
-quickbit_napi_find_first_experimental(
-  js_env_t *env,
-  js_receiver_t,
-  js_object_t buffer,
-  uint32_t offset,
-  uint32_t len,
-  uint32_t value,
-  int32_t position
-) {
-  int err;
-
-  uint8_t *slab;
-  size_t slab_len;
-
-  err = js_get_arraybuffer_info(env, buffer, (void **) &slab, &slab_len);
-  assert(err == 0);
-  assert(offset + len <= slab_len);
-
-  return quickbit_find_first(slab + offset, len, value, position);
-}
-
-static inline int32_t
 quickbit_napi_find_last(
   js_env_t *env,
   js_receiver_t,
@@ -282,6 +260,34 @@ quickbit_napi_skip_last(
   return quickbit_skip_last((uint8_t *) index, len, value, position);
 }
 
+// -----------------
+
+static inline int32_t
+quickbit_napi_find_first_scopeless(
+  js_env_t *env,
+  js_receiver_t,
+  js_arraybuffer_t buffer,
+  uint32_t offset,
+  uint32_t len,
+  uint32_t value,
+  int32_t position
+) {
+  int err;
+#if 1
+   uint8_t *slab;
+   size_t slab_len;
+   err = js_get_arraybuffer_info(env, buffer, (void **) &slab, &slab_len);
+#else
+
+  std::span<uint8_t> slab;
+  // FIXME: generates dead branch
+  err = js_get_arraybuffer_info(env, buffer, slab);
+#endif
+  assert(err == 0);
+  assert(offset + len <= slab_len);
+
+  return quickbit_find_first(slab + offset, len, value, position);
+}
 
 static uint8_t *input_buffer;
 static const size_t input_length = 1 << 20;
@@ -311,6 +317,8 @@ quickbit_napi_exports(js_env_t *env, js_value_t *exports) {
   err = js_set_property<quickbit_napi_find_first_envless, false, false>(env, exports, "quickbit_napi_find_first_envless");
   assert(err == 0);
 
+  err = js_set_property<quickbit_napi_find_first_scopeless, false, false>(env, exports, "quickbit_napi_find_first_scopeless");
+  assert(err == 0);
   // ----------------
 
   err = js_set_property(env, exports, "sizeof_quickbit_index_t", uint32_t(sizeof(quickbit_index_t)));
@@ -350,9 +358,6 @@ quickbit_napi_exports(js_env_t *env, js_value_t *exports) {
   assert(err == 0);
 
   err = js_set_property<quickbit_napi_skip_last>(env, exports, "quickbit_napi_skip_last");
-  assert(err == 0);
-
-  err = js_set_property<quickbit_napi_find_first_experimental, false, false>(env, exports, "quickbit_napi_find_first_experimental");
   assert(err == 0);
 
   return exports;

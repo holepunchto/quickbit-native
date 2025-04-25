@@ -47,6 +47,8 @@ exports.findFirst = function findFirst (field, value, position = 0) {
 
     // experimental (scopeless)
     case 1: {
+      return binding.quickbit_napi_find_first_scopeless(field.buffer, field.byteOffset || 0, field.byteLength, value ? 1 : 0, position)
+
       let { buffer, byteOffset, byteLength } = field
 
       if (!buffer && field instanceof ArrayBuffer) {
@@ -54,7 +56,7 @@ exports.findFirst = function findFirst (field, value, position = 0) {
         byteOffset ||= 0
       }
 
-      return binding.quickbit_napi_find_first_experimental(buffer, byteOffset, byteLength, value ? 1 : 0, position)
+      //return binding.quickbit_napi_find_first_experimental(buffer, byteOffset, byteLength, value ? 1 : 0, position)
     }
 
     // experimental (envless, scopeless)
