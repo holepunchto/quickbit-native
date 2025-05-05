@@ -21,7 +21,7 @@ test('findFirst', async (t) => {
 
     t.is(r, 800000)
 
-    t.comment(Math.round(ops / elapsed * 1e3) + ' ops/s')
+    t.comment(Math.round((ops / elapsed) * 1e3) + ' ops/s')
   })
 
   await t.test('without index', async (t) => {
@@ -37,6 +37,6 @@ test('findFirst', async (t) => {
 
     t.is(r, 800000)
 
-    t.comment(Math.round(ops / elapsed * 1e3) + ' ops/s')
+    t.comment(Math.round((ops / elapsed) * 1e3) + ' ops/s')
   })
 })

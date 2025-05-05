@@ -28,10 +28,11 @@ target_link_libraries(
   PRIVATE
     $<TARGET_OBJECTS:quickbit>
     $<TARGET_OBJECTS:simdle>
-    jstl
   PUBLIC
     quickbit
     simdle
+  PRIVATE
+    jstl
 )
 
 add_napi_module(quickbit_native_node)
@@ -47,10 +48,11 @@ target_link_libraries(
   PRIVATE
     $<TARGET_OBJECTS:quickbit>
     $<TARGET_OBJECTS:simdle>
-    jstl
   PUBLIC
     quickbit
     simdle
+  PRIVATE
+    jstl
 )
 
 resolve_node_module(bare-compat-napi compat)
