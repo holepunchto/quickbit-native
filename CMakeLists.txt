@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.31)
 
-find_package(cmake-fetch REQUIRED PATHS node_modules/cmake-fetch)
 find_package(cmake-bare REQUIRED PATHS node_modules/cmake-bare)
+find_package(cmake-fetch REQUIRED PATHS node_modules/cmake-fetch)
 find_package(cmake-napi REQUIRED PATHS node_modules/cmake-napi)
 
 project(quickbit_native C CXX)
