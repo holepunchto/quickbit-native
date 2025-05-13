@@ -79,7 +79,7 @@ function toBufferChunk(chunk) {
   return { field: toBuffer(chunk.field), offset: chunk.offset }
 }
 
-const Index = (exports.Index = class Index {
+class Index {
   static from(fieldOrChunks, byteLength = -1) {
     if (Array.isArray(fieldOrChunks)) {
       return new SparseIndex(fieldOrChunks, byteLength)
@@ -126,7 +126,9 @@ const Index = (exports.Index = class Index {
       position
     )
   }
-})
+}
+
+exports.Index = Index
 
 class DenseIndex extends Index {
   constructor(field, byteLength) {
