@@ -9,7 +9,7 @@ struct js_type_info_t<quickbit_chunk_t> {
 
   static constexpr auto signature = js_object;
 
-  template <bool checked>
+  template <js_type_options_t options>
   static auto
   unmarshall(js_env_t *env, js_value_t *value, quickbit_chunk_t &chunk) {
     int err;
