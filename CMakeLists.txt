@@ -43,6 +43,12 @@ target_sources(
     binding.cc
 )
 
+target_compile_definitions(
+  ${quickbit_native_node}
+  PRIVATE
+    NAPI_VERSION=9
+)
+
 target_link_libraries(
   ${quickbit_native_node}
   PRIVATE
