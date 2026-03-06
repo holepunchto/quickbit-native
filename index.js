@@ -18,12 +18,7 @@ exports.set = function set(field, bit, value = true) {
   return binding.quickbit_napi_set(toBuffer(field), bit, value ? 1 : 0) !== 0
 }
 
-exports.fill = function fill(
-  field,
-  value,
-  start = 0,
-  end = field.byteLength * 8
-) {
+exports.fill = function fill(field, value, start = 0, end = field.byteLength * 8) {
   const n = field.byteLength * 8
 
   if (start < 0) start += n
@@ -45,29 +40,17 @@ exports.findFirst = function findFirst(field, value, position = 0) {
   if (position < 0) position = 0
   if (position >= n) return -1
 
-  return binding.quickbit_napi_find_first(
-    toBuffer(field),
-    value ? 1 : 0,
-    position
-  )
+  return binding.quickbit_napi_find_first(toBuffer(field), value ? 1 : 0, position)
 }
 
-exports.findLast = function findLast(
-  field,
-  value,
-  position = field.byteLength * 8 - 1
-) {
+exports.findLast = function findLast(field, value, position = field.byteLength * 8 - 1) {
   const n = field.byteLength * 8
 
   if (position < 0) position += n
   if (position < 0) return -1
   if (position >= n) position = n - 1
 
-  return binding.quickbit_napi_find_last(
-    toBuffer(field),
-    value ? 1 : 0,
-    position
-  )
+  return binding.quickbit_napi_find_last(toBuffer(field), value ? 1 : 0, position)
 }
 
 function toBuffer(field) {
@@ -104,12 +87,7 @@ class Index {
     if (position < 0) position = 0
     if (position >= n) return n - 1
 
-    return binding.quickbit_napi_skip_first(
-      this.handle,
-      this.byteLength,
-      value ? 1 : 0,
-      position
-    )
+    return binding.quickbit_napi_skip_first(this.handle, this.byteLength, value ? 1 : 0, position)
   }
 
   skipLast(value, position = this.byteLength * 8 - 1) {
@@ -119,12 +97,7 @@ class Index {
     if (position < 0) return 0
     if (position >= n) position = n - 1
 
-    return binding.quickbit_napi_skip_last(
-      this.handle,
-      this.byteLength,
-      value ? 1 : 0,
-      position
-    )
+    return binding.quickbit_napi_skip_last(this.handle, this.byteLength, value ? 1 : 0, position)
   }
 }
 
@@ -149,13 +122,7 @@ class DenseIndex extends Index {
     if (bit < 0) bit += n
     if (bit < 0 || bit >= n) return false
 
-    return (
-      binding.quickbit_napi_index_update(
-        this.handle,
-        toBuffer(this.field),
-        bit
-      ) !== 0
-    )
+    return binding.quickbit_napi_index_update(this.handle, toBuffer(this.field), bit) !== 0
   }
 }
 
@@ -179,10 +146,7 @@ class SparseIndex extends Index {
     super(byteLength)
     this.chunks = chunks
 
-    binding.quickbit_napi_index_init_sparse(
-      this.handle,
-      this.chunks.map(toBufferChunk)
-    )
+    binding.quickbit_napi_index_init_sparse(this.handle, this.chunks.map(toBufferChunk))
   }
 
   get byteLength() {
