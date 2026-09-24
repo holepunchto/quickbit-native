@@ -16,8 +16,8 @@
     "format": "prettier --write . && lunte --fix",
     "lint": "prettier --check . && lunte",
     "test": "npm run test:bare && npm run test:node",
-    "test:bare": "brittle-bare --coverage test.js",
-    "test:node": "brittle-node --coverage test.js"
+    "test:bare": "brittle-bare --coverage test.mjs",
+    "test:node": "brittle-node --coverage test.mjs"
   },
   "repository": {
     "type": "git",
