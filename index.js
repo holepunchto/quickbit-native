@@ -73,7 +73,7 @@ class Index {
 
   constructor(byteLength) {
     this._byteLength = byteLength
-    this.handle = Buffer.allocUnsafe(binding.sizeof_quickbit_index_t)
+    this.handle = Buffer.allocUnsafeSlow(binding.sizeof_quickbit_index_t)
   }
 
   get byteLength() {
