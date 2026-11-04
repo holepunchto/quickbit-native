@@ -205,3 +205,28 @@ test('findLast various typedarrays', (t) => {
   idx = findLast(bField, false, bit + 1)
   t.is(idx, bit - 1, 'Buffer')
 })
+
+test('index and clear with Uint32Array views', (t) => {
+  const backing = new Uint32Array(4096 + 2048)
+  const page = backing.subarray(1024, 2048)
+  const bytes = new Uint8Array(page.buffer, page.byteOffset, page.byteLength)
+
+  set(page, 200, true)
+  set(page, 32000, true)
+
+  const dense = Index.from(backing.subarray(1024, 5120))
+  const expected = Index.from(new Uint8Array(backing.buffer, 4096, 16384))
+  t.alike(dense.handle, expected.handle, 'dense')
+
+  const sparse = Index.from([{ field: page, offset: 4096 }])
+  const sparseExpected = Index.from([{ field: bytes, offset: 4096 }])
+  t.alike(sparse.handle, sparseExpected.handle, 'sparse')
+
+  set(page, 300, true)
+  t.ok(sparse.update(32768 + 256), 'sparse update')
+  t.is(sparse.skipFirst(false, 32768), 32768 + 128)
+
+  clear(page, { field: Uint32Array.of(0, 0, 0, 0, 0, 0, 1 << 8), offset: 0 })
+  t.is(findFirst(page, true), 300)
+  t.is(findLast(page, true), 32000)
+})
