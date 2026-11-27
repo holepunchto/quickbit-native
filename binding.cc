@@ -14,7 +14,7 @@ struct js_type_info_t<quickbit_chunk_t> {
   unmarshall(js_env_t *env, js_value_t *value, quickbit_chunk_t &chunk) {
     int err;
 
-    js_typedarray_span_t<uint8_t> field;
+    js_typedarray_span_t<> field;
     err = js_get_property(env, value, "field", field);
     if (err < 0) return err;
 
@@ -36,7 +36,7 @@ static inline uint32_t
 quickbit_napi_get(
   js_env_t *env,
   js_receiver_t,
-  js_typedarray_span_t<uint8_t> field,
+  js_typedarray_span_t<> field,
   int32_t bit
 ) {
   return quickbit_get(field.data(), field.size(), bit);
@@ -46,7 +46,7 @@ static inline uint32_t
 quickbit_napi_set(
   js_env_t *env,
   js_receiver_t,
-  js_typedarray_span_t<uint8_t> field,
+  js_typedarray_span_t<> field,
   int32_t bit,
   uint32_t value
 ) {
@@ -57,7 +57,7 @@ static inline void
 quickbit_napi_fill(
   js_env_t *env,
   js_receiver_t,
-  js_typedarray_span_t<uint8_t> field,
+  js_typedarray_span_t<> field,
   uint32_t value,
   int32_t start,
   int32_t end
@@ -69,7 +69,7 @@ static inline void
 quickbit_napi_clear(
   js_env_t *env,
   js_receiver_t,
-  js_typedarray_span_t<uint8_t> field,
+  js_typedarray_span_t<> field,
   std::vector<quickbit_chunk_t> chunks
 ) {
   for (auto &chunk : chunks) {
@@ -81,7 +81,7 @@ static inline int32_t
 quickbit_napi_find_first(
   js_env_t *env,
   js_receiver_t,
-  js_typedarray_span_t<uint8_t> field,
+  js_typedarray_span_t<> field,
   uint32_t value,
   int32_t position
 ) {
@@ -92,7 +92,7 @@ static inline int32_t
 quickbit_napi_find_last(
   js_env_t *env,
   js_receiver_t,
-  js_typedarray_span_t<uint8_t> field,
+  js_typedarray_span_t<> field,
   uint32_t value,
   int32_t position
 ) {
@@ -104,7 +104,7 @@ quickbit_napi_index_init(
   js_env_t *env,
   js_receiver_t,
   js_typedarray_span_t<uint8_t> index,
-  js_typedarray_span_t<uint8_t> field
+  js_typedarray_span_t<> field
 ) {
   quickbit_index_init(index.data(), field.data(), field.size());
 }
@@ -124,7 +124,7 @@ quickbit_napi_index_update(
   js_env_t *env,
   js_receiver_t,
   js_typedarray_span_t<uint8_t> index,
-  js_typedarray_span_t<uint8_t> field,
+  js_typedarray_span_t<> field,
   int32_t bit
 ) {
   return quickbit_index_update(index.data(), field.data(), field.size(), bit);
@@ -135,7 +135,7 @@ quickbit_napi_index_update_sparse(
   js_env_t *env,
   js_receiver_t,
   js_typedarray_span_t<uint8_t> index,
-  js_typedarray_span_t<uint8_t> field,
+  js_typedarray_span_t<> field,
   uint32_t offset,
   int32_t bit
 ) {
